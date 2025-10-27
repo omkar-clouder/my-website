@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M K Enterprises - Import & Export</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-menu li {
+            position: relative;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            transition: background 0.3s;
+            border-radius: 5px;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            top: 100%;
+            left: 0;
+            margin-top: 5px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 15px;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Page Content */
+        .page {
+            display: none;
+            min-height: 80vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        /* Section Styles */
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .feature-card h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .feature-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .feature-card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .feature-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .markets {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .markets h3 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .markets p {
+            font-size: 1.3rem;
+            color: #666;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .product-card h3 {
+            color: #3498db;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .product-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2ecc71);
+            color: white;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Contact Info */
+        .contact-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .dropdown-content {
+                position: static;
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .features-grid,
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">M K ENTERPRISES</div>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('about')">About Us</a></li>
+                <li class="dropdown">
+                    <a href="#">Products ▼</a>
+                    <div class="dropdown-content">
+                        <a href="#" onclick="showPage('non-perishable')">Non-Perishable</a>
+                        <a href="#" onclick="showPage('perishable')">Perishable</a>
+                    </div>
+                </li>
+                <li><a href="#" onclick="showPage('contact')">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1>Empowering Global Trade With Quality Food Products</h1>
+            <p>M K Enterprises is a trusted import-export company delivering premium-grade agricultural food products to global markets.</p>
+            <p class="hero-subtitle">Based in Chhatrapati Sambhajinagar, India</p>
+        </div>
+        
+        <div class="container">
+            <section>
+                <h2>Our Core Offerings</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>Rice</h3>
+                        <p>Premium quality rice varieties</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Pulses</h3>
+                        <p>Protein-rich pulses sourced from trusted mills</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Millets</h3>
+                        <p>Ancient superfood grains for health markets</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Fresh Onions</h3>
+                        <p>High-quality, hand-sorted onions</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Edible Oil</h3>
+                        <p>Pure oils from certified mills</p>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="markets">
+                    <h3>Markets We Serve</h3>
+                    <p>Middle East | Africa | Southeast Asia | Europe</p>
+                </div>
+            </section>
+
+            <section style="text-align: center; padding: 40px 0;">
+                <h2 style="font-size: 2rem; margin-bottom: 20px;">Reliable. Traceable. Export Compliant.</h2>
+                <p style="font-size: 1.2rem; color: #666;">Partner with M K Enterprises to bring India's taste and nutrition to your customers.</p>
+            </section>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <div class="container">
+            <section>
+                <h2>A Responsible Exporter from India to the World</h2>
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <p style="font-size: 1.2rem; color: #666; margin-bottom: 40px;">
+                        Founded with a mission to connect Indian farmers and global buyers, M K Enterprises strengthens food supply chains with quality, consistency, and integrity.
+                    </p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h3>Quality Assurance</h3>
+                        <p>We maintain the highest standards in sourcing and testing all products</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Seamless Logistics</h3>
+                        <p>Efficient supply chain management for timely delivery worldwide</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Customer-Centric Service</h3>
+                        <p>Dedicated support to meet your specific business requirements</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Competitive Pricing</h3>
+                        <p>Best value for premium quality products in the market</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 10px;">
+                    <p style="font-size: 1.3rem; color: #2c3e50; font-style: italic;">
+                        We believe in long-term business relationships built on trust and transparency.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Non-Perishable Page -->
+    <div id="non-perishable" class="page">
+        <div class="container">
+            <h2>Non-Perishable Products</h2>
+            
+            <div class="product-grid">
+                <div class="product-card">
+                    <h3>Rice</h3>
+                    <p>India's best-quality aromatic Basmati, Non-Basmati, and Parboiled rice varieties.</p>
+                    <ul>
+                        <li>Export-grade grains</li>
+                        <li>Strong aroma</li>
+                        <li>Private-label options</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-weight: bold;">Suitable for retail chains, wholesalers & HORECA supply.</p>
+                </div>
+
+                <div class="product-card">
+                    <h3>Pulses</h3>
+                    <p>Wholesome, protein-rich pulses sourced directly from trusted mills.</p>
+                    <p style="font-weight: bold;">Varieties include:</p>
+                    <ul>
+                        <li>Toor</li>
+                        <li>Chana</li>
+                        <li>Urad</li>
+                        <li>Moong</li>
+                        <li>Masoor</li>
+                    </ul>
+                    <p style="margin-top: 15px;">Hygienically cleaned, purity-tested & compliant with international food standards.</p>
+                </div>
+
+                <div class="product-card">
+                    <h3>Millets</h3>
+                    <p>Ancient superfood grains ideal for health markets</p>
+                    <ul>
+                        <li>Bajra</li>
+                        <li>Ragi</li>
+                        <li>Foxtail & more</li>
+                    </ul>
+                    <p style="margin-top: 15px;">Highly nutritious, gluten-free and used in cereals, snacks, bakery & wellness foods.</p>
+                </div>
+
+                <div class="product-card">
+                    <h3>Edible Oils</h3>
+                    <p>Pure oils from certified mills</p>
+                    <ul>
+                        <li>Sunflower</li>
+                        <li>Soybean</li>
+                        <li>Mustard</li>
+                    </ul>
+                    <p style="margin-top: 15px;">Bulk or retail packaging available. Meets global food-grade safety and packaging expectations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Perishable Page -->
+    <div id="perishable" class="page">
+        <div class="container">
+            <h2>Perishable Products</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div class="product-card">
+                    <h3>Fresh Onions</h3>
+                    <p style="font-size: 1.1rem; margin-bottom: 20px;">
+                        High-quality, hand-sorted onions with strong flavor and long shelf life.
+                    </p>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 15px;">
+                        <p><strong>Color:</strong> Red, White, Pink</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 15px;">
+                        <p><strong>Sizes:</strong> 45–65+ mm</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 15px;">
+                        <p><strong>Packaging:</strong> 5kg / 10kg / 20kg / 50kg mesh bags</p>
+                    </div>
+                    
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 5px; border-left: 4px solid #2ecc71;">
+                        <p><strong>Supply:</strong> Round-the-year supply with optimal transport conditions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Page -->
+    <div id="contact" class="page">
+        <div class="container">
+            <h2>Contact Us</h2>
+            
+            <div class="contact-form">
+                <form onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="number">Number:</label>
+                        <input type="tel" id="number" name="number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <textarea id="comment" name="comment" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+            </div>
+
+            <div class="contact-info">
+                <h3>M K ENTERPRISES</h3>
+                <p><strong>Address:</strong><br>
+                Survey No 4/3, Plot No 33-34, Shivparvatinagar, Bhavsingpura,<br>
+                Chhatrapati Sambhajinagar, Maharashtra 431001, India.</p>
+                
+                <p><strong>Mobile:</strong> <a href="tel:+917972866538">+91 7972866538</a></p>
+                <p><strong>Email:</strong> <a href="mailto:mkenterprises2230@gmail.com">mkenterprises2230@gmail.com</a></p>
+                
+                <p style="margin-top: 20px; font-size: 1.1rem;">
+                    <strong>Business Hours:</strong> Mon – Sat | 9:00 AM – 7:00 PM IST
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 10px;">
+                <p style="font-size: 1.3rem; color: #2c3e50; font-weight: bold;">
+                    Let's build global food supply networks together.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 M K Enterprises. All rights reserved.</p>
+        <p style="margin-top: 10px;">Empowering Global Trade With Quality Food Products</p>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            event.target.reset();
+        }
+    </script>
+</body>
+</html>
+
